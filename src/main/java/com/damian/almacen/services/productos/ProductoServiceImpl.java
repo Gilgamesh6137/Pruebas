@@ -7,7 +7,7 @@ import com.damian.almacen.enums.Categoria;
 import com.damian.almacen.exceptions.RecursoNoEncontradoException;
 import com.damian.almacen.mapper.ProductoMapper;
 import com.damian.almacen.repositories.ProductoRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ProductoServiceImpl implements ProductoService{
     private final ProductoMapper productoMapper;
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ProductoResponse> listar(String nombre, String categoria, BigDecimal precioMin, BigDecimal precioMax) {
 
         log.info("Listando todos los productos");
@@ -36,7 +36,7 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ProductoResponse obtenerPorId(Long id) {
         return productoMapper.entidadResponse(obtenerProductoException(id));
     }
