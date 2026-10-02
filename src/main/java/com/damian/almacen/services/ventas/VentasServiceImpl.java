@@ -37,11 +37,13 @@ public class VentasServiceImpl implements VentasService{
     @Transactional(readOnly = true)
     public List<VentaResponse> listar(String estadoVentaP) {
 
+        log.info("Listando ventas...");
+
         EstadoVenta estadoVenta = estadoVentaP == null ? EstadoVenta.REGISTRADA :
                 EstadoVenta.obtenerEstadoVentaPorDescripcion(estadoVentaP);
 
-        return ventaRepository.findAll().stream().filter(venta ->
-                venta.getEstadoVenta() == estadoVenta).map(ventaMapper::entidadAResponse).toList();
+        return ventaRepository.findAllByEstadoVenta(estadoVenta).stream()
+                .map(ventaMapper::entidadAResponse).toList();
     }
 
     @Override
@@ -86,11 +88,10 @@ public class VentasServiceImpl implements VentasService{
     @Override
     public VentaResponse cancelar(Long id) {
 
+        Venta venta = obtenerVentaException(id);
         log.info("Cancelando venta...");
 
-        Venta venta = obtenerVentaException(id);
         venta.cancelar();
-
         log.info("Venta cancelada con ID: " + id);
 
         return ventaMapper.entidadAResponse(venta);

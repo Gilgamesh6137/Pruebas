@@ -4,6 +4,7 @@ import com.damian.almacen.dto.productos.ProductoRequest;
 import com.damian.almacen.dto.productos.ProductoResponse;
 import com.damian.almacen.entities.Producto;
 import com.damian.almacen.enums.Categoria;
+import com.damian.almacen.exceptions.DatoInvalidoException;
 import com.damian.almacen.exceptions.RecursoNoEncontradoException;
 import com.damian.almacen.mapper.ProductoMapper;
 import com.damian.almacen.repositories.ProductoRepository;
@@ -28,6 +29,8 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     @Transactional(readOnly = true)
     public List<ProductoResponse> listar(String nombre, String categoria, BigDecimal precioMin, BigDecimal precioMax) {
+
+        validarMenor(precioMin, precioMax);
 
         log.info("Listando todos los productos");
 
@@ -100,5 +103,11 @@ public class ProductoServiceImpl implements ProductoService{
                         "producto no encontrado con id: " + id
                 )
         );
+    }
+
+    private void validarMenor(BigDecimal precioMin, BigDecimal precioMax) {
+        if (precioMin.compareTo(precioMax) > 0) {
+            throw new DatoInvalidoException("El precio mínimo debe ser menor que el precio máximo");
+        }
     }
 }
