@@ -1,6 +1,7 @@
 package com.damian.almacen.entities;
 
 import com.damian.almacen.exceptions.DatoInvalidoException;
+import com.damian.almacen.utils.ValoresNumericosUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +41,25 @@ public class DetalleVenta {
             throw new DatoInvalidoException("La venta es requerida");
 
         this.venta = venta;
+    }
+
+    public BigDecimal obtenerSubTotal(){
+        return this.precioProducto.multiply(BigDecimal.valueOf(this.cantidadProducto));
+    }
+
+    public static DetalleVenta crear(Producto producto, Integer cantidadProducto
+    ){
+        if(producto == null)
+            throw new DatoInvalidoException("El producto es requerido");
+
+        ValoresNumericosUtils.validarNumeroRequerido(cantidadProducto, "La cantidad del producto es requerida");
+        ValoresNumericosUtils.validarEnteroPositivo(cantidadProducto, "La cantidad del producto debe ser positiva");
+
+        return DetalleVenta.builder()
+                .producto(producto)
+                .cantidadProducto(cantidadProducto)
+                .precioProducto(producto.getPrecio())
+                .build();
+
     }
 }

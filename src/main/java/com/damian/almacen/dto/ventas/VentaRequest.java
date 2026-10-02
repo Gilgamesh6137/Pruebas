@@ -18,5 +18,4 @@ public record VentaRequest(
         @Schema(description = "Lista de productos de la venta")
         @NotEmpty(message = "La lista de productos es requerida y no debe estar vacía")
         List<@Valid DetalleVentaRequest> productos
-
 ) {}

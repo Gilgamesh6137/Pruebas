@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,10 @@ public class Venta {
 
     public void agregarDetalle(DetalleVenta detalleVenta){
         if (detalleVenta == null)
-            throw new DatoInvalidoException("El detalle de la venta es requerido");
+            throw new DatoInvalidoException("El detalle de venta no puede ser nulo");
+
+        if (this.detalleVentas.contains(detalleVenta))
+            throw new ConflictoException("El detalle de venta ya se encuentra registrado");
 
         this.detalleVentas.add(detalleVenta);
         detalleVenta.asignarVenta(this);
@@ -53,6 +57,25 @@ public class Venta {
         if (this.estadoVenta == EstadoVenta.CANCELADA)
             throw new ConflictoException("La venta ya está cancelada");
 
+        this.detalleVentas.forEach(d-> d.getProducto().aumentarCantidad(d.getCantidadProducto()));
+
         this.estadoVenta = EstadoVenta.CANCELADA;
+    }
+
+    public BigDecimal obtenerTotalVenta(){
+        return this.detalleVentas.stream()
+                .map(d -> d.getPrecioProducto().multiply(BigDecimal.valueOf(d.getCantidadProducto())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public static Venta crear(Sucursal sucursal) {
+        if(sucursal == null)
+            throw new DatoInvalidoException("La sucursal es requerida");
+
+        return Venta.builder()
+                .estadoVenta(EstadoVenta.REGISTRADA)
+                .fecha(LocalDate.now())
+                .sucursal(sucursal)
+                .build();
     }
 }

@@ -21,5 +21,4 @@ public record ProductoResponse(
 
         @Schema(description = "Cantidad de producto", example = "300")
         Integer cantidad
-) {
-}
+) {}
