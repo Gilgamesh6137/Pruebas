@@ -30,13 +30,13 @@ public class SucursalServiceImpl implements SucursalService{
 
         log.info("Listando todas las sucursales");
 
-        return  sucursalRepository.findAll().stream().map(sucursalMapper::entidadResponse).toList();
+        return sucursalRepository.findAll().stream().map(sucursalMapper::entidadAResponse).toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public SucursalResponse obtenerPorId(Long id) {
-        return sucursalMapper.entidadResponse(obtenerSucursalException(id));
+        return sucursalMapper.entidadAResponse(obtenerSucursalException(id));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SucursalServiceImpl implements SucursalService{
 
         log.info("Nueva sucursal registrada {}", sucursal.getNombre());
 
-        return sucursalMapper.entidadResponse(sucursal);
+        return sucursalMapper.entidadAResponse(sucursal);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SucursalServiceImpl implements SucursalService{
 
         log.info("Sucursal con id {} actualizada correctamente", id);
 
-        return sucursalMapper.entidadResponse(sucursal);
+        return sucursalMapper.entidadAResponse(sucursal);
     }
 
     @Override
@@ -92,9 +92,7 @@ public class SucursalServiceImpl implements SucursalService{
         log.info("Buscando sucursal con id: {}", id);
 
         return sucursalRepository.findById(id).orElseThrow(
-                () -> new RecursoNoEncontradoException(
-                        "sucursal no encontrada con id: " + id
-                )
+                () -> new RecursoNoEncontradoException("sucursal no encontrada con id: " + id)
         );
     }
 

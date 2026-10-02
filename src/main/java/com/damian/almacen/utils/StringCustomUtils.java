@@ -2,8 +2,6 @@ package com.damian.almacen.utils;
 
 import com.damian.almacen.exceptions.DatoInvalidoException;
 
-import java.util.Locale;
-
 public class StringCustomUtils {
 
     public static void validarNoVacio(String texto, String mensaje){

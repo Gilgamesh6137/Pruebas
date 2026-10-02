@@ -31,7 +31,9 @@ public class ProductoServiceImpl implements ProductoService{
 
         log.info("Listando todos los productos");
 
-        return productoRepository.findAll().stream()
+        Categoria categoriaValid = categoria == null ? null : Categoria.obtenerCategoriaPorDescripcion(categoria);
+
+        return productoRepository.buscarPorFiltrosOpcionales(nombre, categoriaValid, precioMin, precioMax).stream()
                 .map(productoMapper::entidadResponse).toList();
     }
 

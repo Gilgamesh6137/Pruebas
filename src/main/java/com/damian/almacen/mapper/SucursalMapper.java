@@ -16,7 +16,7 @@ public class SucursalMapper {
         );
     }
 
-    public SucursalResponse entidadResponse(Sucursal sucursal){
+    public SucursalResponse entidadAResponse(Sucursal sucursal){
 
         return sucursal == null ? null : new SucursalResponse(
                 sucursal.getId(),
