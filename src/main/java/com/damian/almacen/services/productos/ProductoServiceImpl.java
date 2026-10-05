@@ -30,7 +30,8 @@ public class ProductoServiceImpl implements ProductoService{
     @Transactional(readOnly = true)
     public List<ProductoResponse> listar(String nombre, String categoria, BigDecimal precioMin, BigDecimal precioMax) {
 
-        validarMenor(precioMin, precioMax);
+        if (precioMin != null && precioMax != null)
+            validarMenor(precioMin, precioMax);
 
         log.info("Listando todos los productos");
 
@@ -100,7 +101,7 @@ public class ProductoServiceImpl implements ProductoService{
 
         return productoRepository.findById(id).orElseThrow(
                 () -> new RecursoNoEncontradoException(
-                        "producto no encontrado con id: " + id
+                        "Producto no encontrado con id: " + id
                 )
         );
     }
