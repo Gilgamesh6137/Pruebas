@@ -47,8 +47,7 @@ public class DetalleVenta {
         return this.precioProducto.multiply(BigDecimal.valueOf(this.cantidadProducto));
     }
 
-    public static DetalleVenta crear(Producto producto, Integer cantidadProducto
-    ){
+    public static DetalleVenta crear(Producto producto, Integer cantidadProducto){
         if(producto == null)
             throw new DatoInvalidoException("El producto es requerido");
 

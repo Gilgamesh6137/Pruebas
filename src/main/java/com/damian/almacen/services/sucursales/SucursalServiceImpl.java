@@ -92,7 +92,7 @@ public class SucursalServiceImpl implements SucursalService{
         log.info("Buscando sucursal con id: {}", id);
 
         return sucursalRepository.findById(id).orElseThrow(
-                () -> new RecursoNoEncontradoException("sucursal no encontrada con id: " + id)
+                () -> new RecursoNoEncontradoException("Sucursal no encontrada con id: " + id)
         );
     }
 
